@@ -3,18 +3,13 @@ const TicketControl = require('../models/ticket-control');
 const ticketControl = new TicketControl();
 
 const socketController = (socket) => {
-  socket.on('disconnect', () => {});
+  socket.emit('ultimo-ticket', ticketControl.ultimo);
 
-  // Capturar el emit del front-end, con ese mismo nombre
-  // ? El parámetro callback hace referencia al tercer agumento del emit del front-end
-  // ? se utiliza, por ejemplo, para poder manejar un comportamiento diferente en
-  // ? el cliente que lanzó el evento personalizado.
-  socket.on('enviar-mensaje', (payload, callback) => {
-    const id = 123456789;
+  socket.on('siguiente-ticket', (payload, callback) => {
+    const siguiente = ticketControl.siguiente();
+    callback(siguiente);
 
-    callback(id);
-    // * Broadcast envía mensaje a todos
-    socket.broadcast.emit('enviar-mensaje', payload);
+    // TODO: notificar que hay un nuevo ticket pendiente de asignar
   });
 };
 
