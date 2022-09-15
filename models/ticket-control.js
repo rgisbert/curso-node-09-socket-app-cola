@@ -13,7 +13,7 @@ class TicketControl {
     // Último ticket atendiendo
     this.ultimo = 0;
     this.hoy = new Date().getDate();
-    this.ticket = [];
+    this.tickets = [];
     this.ultimosCuatro = [];
 
     this.init();
@@ -26,8 +26,8 @@ class TicketControl {
     return {
       ultimo: this.ultimo,
       hoy: this.hoy,
-      ticket: this.ticket,
-      ultimosCuatro: this.ultimosCuatro,
+      tickets: this.tickets,
+      ultimosCuatro: this.ultimosCuatro.slice(0, 4),
     };
   }
 
@@ -64,7 +64,7 @@ class TicketControl {
   siguiente() {
     this.ultimo += 1;
     const ticket = new Ticket(this.ultimo, null);
-    this.ticket.push(ticket);
+    this.tickets.push(ticket);
 
     this.guardarDB();
     return `Ticket ${this.ultimo}`;
@@ -86,7 +86,6 @@ class TicketControl {
 
     // Añadir al principio de los últimos, para mostrarlos
     this.ultimosCuatro.unshift(ticket);
-    this.ultimosCuatro.slice(0, 4);
 
     this.guardarDB();
 
